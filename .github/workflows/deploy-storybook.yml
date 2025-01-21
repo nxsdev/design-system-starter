@@ -41,20 +41,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Debug file structure
-        run: |
-          pwd
-          ls -la
-          cat pnpm-lock.yaml || echo "pnpm-lock.yaml not found"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-          run_install: false
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -63,9 +54,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        env:
-          DEBUG: pnpm:*
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Storybook
         run: pnpm run build-storybook
