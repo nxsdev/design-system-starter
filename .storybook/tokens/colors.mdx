@@ -1,0 +1,67 @@
+import { ColorItem, ColorPalette, Meta } from "@storybook/addon-docs";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../tailwind.config.ts";
+
+export const fullConfig = resolveConfig(tailwindConfig);
+
+<Meta title="design/Colors" />
+
+# Color System
+
+## Functional Colors
+
+<ColorPalette>
+  {Object.entries(fullConfig.theme.colors)
+    .filter(([key]) =>
+      [
+        "foreground",
+        "background",
+        "primary",
+        "secondary",
+        "card",
+        "accent",
+        "muted",
+        "popover",
+        "destructive",
+        "input",
+        "border",
+        "ring",
+      ].includes(key)
+    )
+    .map(([name, value]) => {
+      const colors =
+        typeof value === "string" ? { [name]: value } : value || {};
+      return <ColorItem key={name} title={name} colors={colors} />;
+    })}
+</ColorPalette>
+
+## Extended Colors
+
+<ColorPalette>
+  {Object.entries(fullConfig.theme.colors)
+    .filter(
+      ([key]) =>
+        ![
+          "foreground",
+          "background",
+          "primary",
+          "secondary",
+          "card",
+          "accent",
+          "muted",
+          "popover",
+          "destructive",
+          "input",
+          "border",
+          "ring",
+          "inherit",
+          "current",
+          "transparent",
+        ].includes(key)
+    )
+    .map(([name, value]) => {
+      const colors =
+        typeof value === "string" ? { [name]: value } : value || {};
+      return <ColorItem key={name} title={name} colors={colors} />;
+    })}
+</ColorPalette>
