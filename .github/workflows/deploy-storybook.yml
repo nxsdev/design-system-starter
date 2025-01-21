@@ -1,18 +1,14 @@
-name: 'Chromatic Deployment'
+name: "Chromatic"
 
-on: 
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: push
 
 jobs:
-  chromatic-deployment:
+  chromatic:
+    name: Run Chromatic
     runs-on: ubuntu-latest
-    env:
-      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -30,8 +26,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Publish to Chromatic
-        uses: chromaui/action@v1
-        # withの代わりにenvを使用
-        env:
-          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
