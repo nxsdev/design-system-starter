@@ -1,38 +1,61 @@
-name: "Chromatic"
+name: Deploy Storybook
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'src/**/*.stories.@(js|jsx|ts|tsx|mdx)'
+      - '.storybook/**'
+      - 'src/**/*.mdx'
+      - 'src/**/*.stories.@(js|jsx|mjs|ts|tsx|)'
+      - 'tokens/**/*.stories.@(js|jsx|ts|tsx|)'
+      - 'tokens/**/*.mdx'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  pull_request:
+    branches: ["main"]
+    paths:
+      - 'src/**/*.stories.@(js|jsx|ts|tsx|mdx)'
+      - '.storybook/**'
+      - 'src/**/*.mdx'
+      - 'src/**/*.stories.@(js|jsx|mjs|ts|tsx|)'
+      - 'tokens/**/*.stories.@(js|jsx|ts|tsx|)'
+      - 'tokens/**/*.mdx'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
 
-on: push
-
-# 権限設定を追加
 permissions:
   contents: read
-  pull-requests: write # Chromaticがプルリクエストにコメントするために必要
   deployments: write
+  statuses: write
 
 jobs:
-  chromatic:
-    name: Run Chromatic
+  chromatic-deployment:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
         with:
           version: 8
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "20"
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
-      - name: Run Chromatic
+      - name: Publish to Chromatic
         uses: chromaui/action@latest
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          projectToken: chpt_4cac2703020887a
+          onlyChanged: true
+          externals: |
+            - 'public/**'
+            - 'dist/**'
