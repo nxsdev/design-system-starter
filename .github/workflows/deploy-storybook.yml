@@ -2,6 +2,12 @@ name: "Chromatic"
 
 on: push
 
+# 権限設定を追加
+permissions:
+  contents: read
+  pull-requests: write # Chromaticがプルリクエストにコメントするために必要
+  deployments: write
+
 jobs:
   chromatic:
     name: Run Chromatic
