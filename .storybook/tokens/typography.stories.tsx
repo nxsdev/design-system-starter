@@ -26,7 +26,7 @@ const meta: Meta<{
           <th scope="col" className="px-6 py-3">
             Name
           </th>
-          <th scope="col" className="hidden px-6 py-3 sm:table-cell">
+          <th scope="col" className="hidden px-5 py-3 sm:table-cell">
             Property
           </th>
           <th scope="col" className="px-6 py-3">
